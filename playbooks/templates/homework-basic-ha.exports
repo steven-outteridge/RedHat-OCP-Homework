@@ -1,0 +1,1 @@
+/srv/nfs/ *(rw,root_squash,no_wdelay,sync)

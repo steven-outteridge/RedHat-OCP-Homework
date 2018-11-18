@@ -1,2 +1,4 @@
 # RedHat-OCP-HomeWork Assignment
-# RedHat-OCP-HomeWork Assignment
+Basic Requirements
+Create host inventory
+  inventoy/hosts
