@@ -1,0 +1,49 @@
+---
+- name: OCP Homework assessment - pre install checks
+  hosts: all
+
+  tasks:
+    - name: NODES ONLY  Check Docker is installed to latest version and running
+      when: inventory_hostname in groups['nodes']
+      yum:
+        name: docker
+        state: latest
+
+    - name: LOCALHOST BASTION ONLY Check atomic-openshift-clients openshift-ansible are installed to latest version
+      connection: local
+      yum:
+        name: atomic-openshift-clients, openshift-ansible
+        state: latest
+
+    - name: Create NFS dirs
+      when: inventory_hostname in groups['nfs']
+      shell: mkdir -p /srv/nfs/user-vols/pv{1..200}
+      notify: restart nfs
+
+    - name: Change ownership of NFS dirs
+      when: inventory_hostname in groups['nfs']
+      file: 
+        dest: /srv/nfs
+        owner: nobody
+        group: nobody
+        mode: 0777
+        recurse: yes
+      notify: restart nfs
+
+    - name: export NFS
+      when: inventory_hostname in groups['nfs']
+      template:
+        src: homework-basic-ha.exports
+        dest: /etc/exports.d/homework-basic-ha.exports
+        backup: yes
+      template:
+        src: homework-uservols.exports
+        dest: /etc/exports.d/homework-uservols.exports
+        backup: yes
+      notify: restart nfs
+
+  handlers:
+    - name: restart nfs
+      service:
+        name: nfs
+        state: restarted

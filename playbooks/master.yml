@@ -1,0 +1,4 @@
+---
+- import_playbook: /root/RedHat-OCP-Homework/playbooks/1.preinstall-chks.yml
+- import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+- import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
