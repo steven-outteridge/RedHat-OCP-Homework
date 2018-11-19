@@ -2,17 +2,17 @@
   "apiVersion": "v1",
   "kind": "PersistentVolume",
   "metadata": {
-    "name": pv{{ item }}
+    "name": "pv{{ item }}"
   },
   "spec": {
     "capacity": {
-        "storage": {{ volsize }}
+        "storage": "{{ volsize }}"
     },
-    "accessModes": [ "ReadWriteMany" ],
+    "accessModes": [ "{{ accessmode }}" ],
     "nfs": {
-        "path": "/srv/nfs/user-vols/pv{{ item }},
-        "server": {{ nfsserver }}
+        "path": "/srv/nfs/user-vols/pv{{ item }}",
+        "server": "{{ nfsserver }}"
     },
-    "persistentVolumeReclaimPolicy": "Retain"
+    "persistentVolumeReclaimPolicy": "{{ reclaimmode }}"
   }
 }

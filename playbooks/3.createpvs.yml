@@ -1,0 +1,39 @@
+---
+- name: OCP Homework assessment - Bastion tasks
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  vars:
+    nfsserver: "{{ groups['nfs'][0] }}"
+  tasks:
+    - name:  BASTION Create PV config file 10G retain ReadWriteMany
+      vars:
+        volsize: '10Gi'
+        reclaimmode: 'Retain'
+        accessmode: 'ReadWriteMany'
+      template:
+        src: pvfile
+        dest: /root/RedHat-OCP-Homework/pv/pv{{ item }}
+      with_sequence: start=26 end=50
+      tags:
+        - pvconfile1
+
+    - name:  BASTION Create PV config file 5G Recycle ReadWriteOnce
+      vars:
+        volsize: '5Gi'
+        reclaimmode: 'Recycle'
+        accessmode: 'ReadWriteOnce'
+      template:
+        src: pvfile
+        dest: /root/RedHat-OCP-Homework/pv/pv{{ item }}
+      with_sequence: start=1 end=25
+      tags:
+        - pvconfile2
+
+    - name:  BASTION Create PVs
+      command: >
+          oc create -f /root/RedHat-OCP-Homework/pv/pv{{ item }}
+      with_sequence: start=1 end=50
+      tags:
+        - pvcreate
