@@ -1,0 +1,13 @@
+---
+- name: OCP Homework assessment - CICD Pipeline deployment
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  tasks:
+    - name: Git repo clone 
+      git:
+        repo: https://github.com/redhat-cop/container-pipelines.git
+        dest: /root/RedHat-OCP-Homework/test
+      tags:
+        - git

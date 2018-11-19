@@ -1,6 +1,8 @@
 ---
 - import_playbook: /root/RedHat-OCP-Homework/playbooks/1.preinstall-chks.yml
+- import_playbook: /root/RedHat-OCP-Homework/playbooks/2.preinstall-local-chks.yml
 - import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 - import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
-- import_playbook: /root/RedHat-OCP-Homework/playbooks/2.postinstall-chks.yml
-- import_playbook: /root/RedHat-OCP-Homework/playbooks/3.createpvs.yml
+- import_playbook: /root/RedHat-OCP-Homework/playbooks/3.postinstall-chks.yml
+- import_playbook: /root/RedHat-OCP-Homework/playbooks/4.createpvs.yml
+- import_playbook: /root/RedHat-OCP-Homework/playbooks/5.create-test-app.yml

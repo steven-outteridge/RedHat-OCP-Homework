@@ -25,17 +25,6 @@ openshift_master_cluster_public_hostname=loadbalancer1.ccb4.example.opentlc.com
 openshift_master_default_subdomain=apps.ccb4.example.opentlc.com
 openshift_master_overwrite_named_certificates=True
 
-# NetworkPolicy
-os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
-
-# Set this line to enable NFS
-openshift_enable_unsupported_configurations=True
-
-# htpasswd Authentication
-openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
-openshift_master_htpasswd_file=/root/htpasswd.openshift
-
-
 ###########################################################################
 ### OpenShift Hosts
 ###########################################################################

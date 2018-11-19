@@ -1,0 +1,19 @@
+---
+- name: OCP Homework assessment - Bastion create test app
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  tasks:
+    - name: Create project
+      command: >
+          oc new-project smoke-test
+      tags:
+        - pvtestproj
+
+
+    - name:  Create test app
+      command: >
+          oc new-app nodejs-mongo-persistent -n smoke-test
+      tags:
+        - pvtestapp
