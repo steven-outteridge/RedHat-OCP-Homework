@@ -1,0 +1,23 @@
+---
+- name: OCP Homework assessment - Bastion tasks
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  tasks:
+#    - name: set facts
+ #     set_fact:
+  #      volsize: '10Gi'
+      
+    - name:  BASTION Create PV's
+      vars:
+        volsize: '10Gi'
+      template:
+        src: pvfile
+        dest: /root/RedHat-OCP-Homework/pv/pv{{ item }}
+#      file: 
+ #       path: /root/RedHat-OCP-Homework/pv/pv{{ item }}
+  #      state: touch
+      with_sequence: start=0 end=25
+      tags:
+        - pvcreate

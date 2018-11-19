@@ -25,7 +25,7 @@ openshift_master_cluster_public_hostname=loadbalancer1.ccb4.example.opentlc.com
 openshift_master_default_subdomain=apps.ccb4.example.opentlc.com
 openshift_master_overwrite_named_certificates=True
 
-#NetworkPolicy
+# NetworkPolicy
 os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 
 # Set this line to enable NFS
@@ -99,7 +99,6 @@ openshift_hosted_registry_pullthrough=true
 openshift_hosted_registry_acceptschema2=true
 openshift_hosted_registry_enforcequota=true
 
-#broker
 ### OpenShift Service Catalog Vars
 ###########################################################################
 
@@ -114,6 +113,9 @@ openshift_hosted_etcd_storage_nfs_directory=/srv/nfs
 openshift_hosted_etcd_storage_labels={'storage': 'etcd-asb'}
 openshift_hosted_etcd_storage_volume_name=etcd-asb
 openshift_hosted_etcd_storage_access_modes=['ReadWriteOnce']
+
+# Necessary because of a bug in the installer on 3.9
+openshift_prometheus_node_exporter_image_version=v3.9
 
 
 ###########################################################################

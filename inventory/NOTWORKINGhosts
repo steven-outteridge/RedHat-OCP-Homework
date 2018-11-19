@@ -1,0 +1,48 @@
+###########################################################################
+### OpenShift Hosts
+###########################################################################
+[OSEv3:children]
+lb
+masters
+etcd
+nodes
+nfs
+#glusterfs
+
+[lb]
+loadbalancer1.ccb4.internal
+
+[masters]
+master1.ccb4.internal
+master2.ccb4.internal
+master3.ccb4.internal
+
+[etcd]
+master1.ccb4.internal
+master2.ccb4.internal
+master3.ccb4.internal
+
+[nodes]
+## These are the masters
+master1.ccb4.internal openshift_hostname=master1.ccb4.internal  openshift_node_labels="{'env': 'master', 'cluster': 'ccb4'}"
+master2.ccb4.internal openshift_hostname=master2.ccb4.internal  openshift_node_labels="{'env': 'master', 'cluster': 'ccb4'}"
+master3.ccb4.internal openshift_hostname=master3.ccb4.internal  openshift_node_labels="{'env': 'master', 'cluster': 'ccb4'}"
+
+## These are infranodes
+infranode1.ccb4.internal openshift_hostname=infranode1.ccb4.internal  openshift_node_labels="{'env':'infra', 'cluster': 'ccb4'}"
+infranode2.ccb4.internal openshift_hostname=infranode2.ccb4.internal  openshift_node_labels="{'env':'infra', 'cluster': 'ccb4'}"
+
+## These are regular nodes
+node1.ccb4.internal openshift_hostname=node1.ccb4.internal  openshift_node_labels="{'env':'app', 'cluster': 'ccb4'}"
+node2.ccb4.internal openshift_hostname=node2.ccb4.internal  openshift_node_labels="{'env':'app', 'cluster': 'ccb4'}"
+node3.ccb4.internal openshift_hostname=node3.ccb4.internal  openshift_node_labels="{'env':'app', 'cluster': 'ccb4'}"
+node4.ccb4.internal openshift_hostname=node4.ccb4.internal  openshift_node_labels="{'env':'app', 'cluster': 'ccb4'}"
+
+## These are CNS nodes
+# support1.ccb4.internal openshift_hostname=support1.ccb4.internal  openshift_node_labels="{'env':'glusterfs', 'cluster': 'ccb4'}"
+
+[nfs]
+support1.ccb4.internal openshift_hostname=support1.ccb4.internal
+
+#[glusterfs]
+# support1.ccb4.internal glusterfs_devices='[ "/dev/xvdd" ]'

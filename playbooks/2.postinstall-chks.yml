@@ -1,0 +1,21 @@
+---
+- name: OCP Homework assessment - Post install checks
+  hosts: OSEv3
+
+  tasks:
+    - name:   MASTER Copy.kube dir from master to Bastion
+      when: inventory_hostname in groups['masters']
+      fetch:
+        src: /root/.kube/config
+        dest: /root/.kube/config
+        flat: yes
+
+
+    - name:  BASTION Create PV's
+      local_action:
+        file: 
+          path: /root/RedHat-OCP-Homework/pv"{{ item }}"
+          state: touch
+        with_sequence: start=0 end=25
+        tags:
+          - pvcreate
