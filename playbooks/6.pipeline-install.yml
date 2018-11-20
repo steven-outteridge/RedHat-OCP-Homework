@@ -5,9 +5,5 @@
   become: yes
   become_user: root
   tasks:
-    - name: Git repo clone 
-      git:
-        repo: https://github.com/redhat-cop/container-pipelines.git
-        dest: /root/RedHat-OCP-Homework/test
-      tags:
-        - git
+    - name: run the script to deploy the apps and pipeline
+      script: /root/RedHat-OCP-Homework/Jenkins/cicd-create.sh

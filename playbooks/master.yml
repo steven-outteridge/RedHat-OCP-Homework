@@ -6,3 +6,4 @@
 - import_playbook: /root/RedHat-OCP-Homework/playbooks/3.postinstall-chks.yml
 - import_playbook: /root/RedHat-OCP-Homework/playbooks/4.createpvs.yml
 - import_playbook: /root/RedHat-OCP-Homework/playbooks/5.create-test-app.yml
+- import_playbook: /root/RedHat-OCP-Homework/playbooks/6.pipeline-install.yml
