@@ -15,15 +15,15 @@ deployment_type=openshift-enterprise
 openshift_hosted_infra_selector="env=infra"
 openshift_prometheus_node_selector={"env":"infra"}
 
-#openshift_master_api_port=443
-#openshift_master_console_port=443
-#sm_default_node_selector='env=app'
-#deployment_type=openshift-enterprise
-#openshift_master_cluster_method=native
-openshift_master_cluster_hostname=loadbalancer1.GUID.internal
-openshift_master_cluster_public_hostname=loadbalancer1.GUID.example.opentlc.com
-openshift_master_default_subdomain=apps.GUID.example.opentlc.com
-#openshift_master_overwrite_named_certificates=True
+openshift_master_api_port=443
+openshift_master_console_port=443
+sm_default_node_selector='env=app'
+deployment_type=openshift-enterprise
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=loadbalancer1.427e.internal
+openshift_master_cluster_public_hostname=loadbalancer1.427e.example.opentlc.com
+openshift_master_default_subdomain=apps.427e.example.opentlc.com
+openshift_master_overwrite_named_certificates=True
 
 ###########################################################################
 ### OpenShift Hosts
@@ -37,39 +37,39 @@ nfs
 #glusterfs
 
 [lb]
-loadbalancer1.GUID.internal
+loadbalancer1.427e.internal
 
 [masters]
-master1.GUID.internal
-master2.GUID.internal
-master3.GUID.internal
+master1.427e.internal
+master2.427e.internal
+master3.427e.internal
 
 [etcd]
-master1.GUID.internal
-master2.GUID.internal
-master3.GUID.internal
+master1.427e.internal
+master2.427e.internal
+master3.427e.internal
 
 [nodes]
 ## These are the masters
-master1.GUID.internal openshift_hostname=master1.GUID.internal  openshift_node_labels="{'env': 'master', 'cluster': 'GUID'}"
-master2.GUID.internal openshift_hostname=master2.GUID.internal  openshift_node_labels="{'env': 'master', 'cluster': 'GUID'}"
-master3.GUID.internal openshift_hostname=master3.GUID.internal  openshift_node_labels="{'env': 'master', 'cluster': 'GUID'}"
+master1.427e.internal openshift_hostname=master1.427e.internal  openshift_node_labels="{'env': 'master', 'cluster': '427e'}"
+master2.427e.internal openshift_hostname=master2.427e.internal  openshift_node_labels="{'env': 'master', 'cluster': '427e'}"
+master3.427e.internal openshift_hostname=master3.427e.internal  openshift_node_labels="{'env': 'master', 'cluster': '427e'}"
 
 ## These are infranodes
-infranode1.GUID.internal openshift_hostname=infranode1.GUID.internal  openshift_node_labels="{'env':'infra', 'cluster': 'GUID'}"
-infranode2.GUID.internal openshift_hostname=infranode2.GUID.internal  openshift_node_labels="{'env':'infra', 'cluster': 'GUID'}"
+infranode1.427e.internal openshift_hostname=infranode1.427e.internal  openshift_node_labels="{'env':'infra', 'cluster': '427e'}"
+infranode2.427e.internal openshift_hostname=infranode2.427e.internal  openshift_node_labels="{'env':'infra', 'cluster': '427e'}"
 
 ## These are regular nodes
-node1.GUID.internal openshift_hostname=node1.GUID.internal  openshift_node_labels="{'env':'app', 'cluster': 'GUID'}"
-node2.GUID.internal openshift_hostname=node2.GUID.internal  openshift_node_labels="{'env':'app', 'cluster': 'GUID'}"
-node3.GUID.internal openshift_hostname=node3.GUID.internal  openshift_node_labels="{'env':'app', 'cluster': 'GUID'}"
-node4.GUID.internal openshift_hostname=node4.GUID.internal  openshift_node_labels="{'env':'app', 'cluster': 'GUID'}"
+node1.427e.internal openshift_hostname=node1.427e.internal  openshift_node_labels="{'env':'app', 'cluster': '427e'}"
+node2.427e.internal openshift_hostname=node2.427e.internal  openshift_node_labels="{'env':'app', 'cluster': '427e'}"
+node3.427e.internal openshift_hostname=node3.427e.internal  openshift_node_labels="{'env':'app', 'cluster': '427e'}"
+node4.427e.internal openshift_hostname=node4.427e.internal  openshift_node_labels="{'env':'app', 'cluster': '427e'}"
 
 ## These are CNS nodes
-# support1.GUID.internal openshift_hostname=support1.GUID.internal  openshift_node_labels="{'env':'glusterfs', 'cluster': 'GUID'}"
+# support1.427e.internal openshift_hostname=support1.427e.internal  openshift_node_labels="{'env':'glusterfs', 'cluster': '427e'}"
 
 [nfs]
-support1.GUID.internal openshift_hostname=support1.GUID.internal
+support1.427e.internal openshift_hostname=support1.427e.internal
 
 #[glusterfs]
-# support1.GUID.internal glusterfs_devices='[ "/dev/xvdd" ]'
+# support1.427e.internal glusterfs_devices='[ "/dev/xvdd" ]'

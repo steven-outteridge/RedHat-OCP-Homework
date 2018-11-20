@@ -2,12 +2,6 @@
 ###########################################################################
 ### Ansible Vars
 ###########################################################################
-openshift_master_api_port: 443
-openshift_master_console_port: 443
-sm_default_node_selector: 'env:app'
-openshift_master_cluster_method: native
-openshift_master_overwrite_named_certificates: True
-
 #NetworkPolicy
 os_sdn_network_plugin_name: 'redhat/openshift-ovs-multitenant'
 
