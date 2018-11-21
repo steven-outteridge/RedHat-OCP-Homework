@@ -34,6 +34,14 @@ oc expose svc openshift-tasks -n tasks-build
 oc expose svc openshift-tasks -n tasks-dev
 oc expose svc openshift-tasks -n tasks-test
 oc expose svc openshift-tasks -n tasks-prod
-oc create -f /root/RedHat-OCP-Homework/Jenkins/pipeline.yaml
-oc start-build tasks-pipeline
+oc create -f /root/RedHat-OCP-Homework/Jenkins/pipeline.yaml -n tasks-build
+oc start-build tasks-pipeline -n tasks-build
+# Horizonal Pod AutoScaler
+# Create Limits for tasks-prod
+oc create -f /root/RedHat-OCP-Homework/Jenkins/limitrange-test.yaml -n tasks-prod
+# Set the autoscale to maximum of 10 and CPU threshold to 80%
+oc autoscale dc/openshift-tasks --min 1 --max 10 --cpu-percent=80 -n tasks-prod
+oc rollout latest deploymentconfigs/openshift-tasks -n tasks-prod
+
+
 

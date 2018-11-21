@@ -7,6 +7,10 @@ timeout=60
 ansible_become=yes
 ansible_ssh_user=ec2-user
 
+###########################################################################
+### OpenShift Basic Vars
+###########################################################################
+
 # disable memory check, as we are not a production environment
 openshift_disable_check="memory_availability"
 
@@ -15,6 +19,9 @@ deployment_type=openshift-enterprise
 openshift_hosted_infra_selector="env=infra"
 openshift_prometheus_node_selector={"env":"infra"}
 
+###########################################################################
+### OpenShift Master Vars
+###########################################################################
 openshift_master_api_port=443
 openshift_master_console_port=443
 sm_default_node_selector='env=app'

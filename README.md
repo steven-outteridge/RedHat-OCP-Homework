@@ -51,5 +51,5 @@ HA Requirements
 ---------------
 
 
-
-
+Router
+Web proxy that maps URLs and paths into OpenShift services allowing external traffic into cluster.
