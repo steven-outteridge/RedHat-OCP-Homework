@@ -8,27 +8,39 @@ Overview and quick install
 This install is designed to be applied to the Red Hat Opentlc homework enviroment.
 The cluster install can be cloned from https://github.com/steven-outteridge/RedHat-OCP-Homework.git.
 It will create an ansible structure under RedHat-OCP-Homework with hosts group_vars config files, templates and scripts.
-The cluster can then be installed using the command:
+Assuming clopne from /root the cluster can then be installed using the command:
 
 /root/RedHat-OCP-Homework/installcluster.sh
 
-Tasks
------
-Basic Requirements:
-Configure host file:
-Host file and host_grouip OSEv3 have been pre-configured cluster variables:
-   master console to port 443
-   enabling registry with 20G of NFS storage
-   configure 2 replicated router pods on infra nodes
 
-
+Pre Configured host file:
+-------------------------
+Host file and host_group-OSEv3 have pre-configured cluster variables:
+   Host File:
+   Three Masters - (HA requirement)
+   Three etcd nodes - (HA requirment)
+   Cluster Variables
+   master console to port 443 - (Basic Requirement)
+   enabling registry with 20G of persistent NFS storage (Basic Requirement)
+   configure 2 replicated router pods on infra nodes - label 'env':'infra' (Basic Env and HA Requirement)
+   High availabe access to master through loadbalancer (HA requirement)
+      openshift_master_cluster_public_hostname
+   External access to apps through load balancer (HA Requirment)
+      openshift_master_default_subdomain
+   Net work Policy set to redhat/openshift-ovs-multitenant to isolate by default (Env Config)
+      os_sdn_network_plugin_name
+   enable elk logging with with 10G of persistent storage on infra nodes (Env Config)
+   enable heapster metrics with hawkcular frontend and cassandra db with 10G of persistent storage(Env Config)
+   enable Service Catalogue/ Template Service Broker and Ansible Service Broker(Env Config)
+   
+   
+   
+Deploymnent Tasks
+-----------------
 The ansible script calls a number of playbooks that peform the following tasks:
 
 Preinstall checks:
-Ansible manages the deployment using hosts and OSEv3 vars files to describes the configuration of the OCP cluster. The hosts needs to contain the phyhsical hostnames under the following groups:
-lb masters
-etcd
-nodes and nfs also the infra nodes need the label 'env':'infra'
+
 Changes and GUID in configured hosts file to the correct hoist name variable
 Checks that the bastion host has the latest "atomic-openshift-clients" & "openshift-ansible" packages install
 All nodes have latest docker installed and running
@@ -45,7 +57,7 @@ Create persistent volume files from template for 2 types of storage,  "5G Recycl
 Cluster Test:
 Run up a test project "Smoke Test" and install a DB with persistent storage.
 
-CI/CD:
+CI/CD Work FLow:
 Create Jenkins Project and install Jenkins
 Create Build Dev Test and Prod Projects
 Give jenkins service account edit permission on pipeline projects
