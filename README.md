@@ -12,6 +12,8 @@ The cluster can then be installed using the command:
 
 /root/RedHat-OCP-Homework/installcluster.sh
 
+Tasks
+-----
 The script calls a number of playbooks that peform the following tasks:
 
 Preinstall checks:
@@ -30,6 +32,30 @@ Create persistent volume files from template for 2 types of storage,  "5G Recycl
 
 Cluster Test:
 Run up a test project "Smoke Test" and install a DB with persistent storage.
+
+CI/CD:
+Create Jenkins Project and install Jenkins
+Create Build Dev Test and Prod Projects
+Give jenkins service account edit permission on pipeline projects
+Install App into build
+Allow service accounts in Dev Test and Prod to pull images from buld
+Create apptags for projects
+Install the apps iunb the projects
+Expose the services
+Create the pipeline from template into the build project
+Start the pipeline build 
+
+HPA:
+On the Production project created in the CI/CD deployment
+create a limit range
+auto scale to 80% CPU threshold and maximum of 10 pods
+rollout latest deployment
+
+
+
+
+
+
 
 
 Basic Requirements
