@@ -1,30 +1,25 @@
-# RedHat-OCP-HomeWork Assignment
+RedHat-OCP-HomeWork Assignment
+Course - 12th - 16th November 2018
+Lecturer - jindrich.kana@elostech.cz
+
+
 Overview and quick install
+--------------------------
+This install is designed to be applied to the Red Hat Opentlc homework enviroment.
 The cluster install can be cloned from https://github.com/steven-outteridge/RedHat-OCP-Homework.git
-It will create the following ansible structure to assist with install:
-
-RedHat-OCP-Homework
-├── ansible.cfg
-├── inventory
-│   ├── group_vars
-│   │   └── OSEv3
-│   ├── hosts
-├── playbooks
-│   ├── 1.preinstall-chks.yml
-│   ├── 2.preinstall-local-chks.yml
-│   ├── 3.postinstall-chks.yml
-│   ├── 4.createpvs.yml
-│   ├── master.yml
-│   └── templates
-│       ├── homework-basic-ha.exports
-│       ├── homework-uservols.exports
-│       └── pvfile
-└── README.md
-
-
+It will create an ansible structure under RedHat-OCP-Homework with config files, templates and scripts.
 The cluster can then be installed using the command:
 
-ansible-playbook -i /root/RedHat-OCP-Homework/inventory/hosts /root/RedHat-OCP-Homework/playbooks/master.yml
+/root/RedHat-OCP-Homework/installcluster.sh
+
+The script calls a numbe of playbooks that peform the following:
+
+Preinstall checks:
+Changes and GUID in hosts file to the correct hoist name variable
+Checks that the bastion host has the latest "atomic-openshift-clients" & "openshift-ansible" packages install
+All nodes have latest docker installed and running
+The NFS server defined in hosts is exporting /srv/nfs
+
 
 Basic Requirements
 ------------------
