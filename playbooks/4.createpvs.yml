@@ -1,3 +1,5 @@
+#Create persistent volume files from template for 2 types of storage,
+#"5G Recycle ReadWriteOnce" & "10G retain ReadWriteMany" then create the persistent volumes on the cluster
 ---
 - name: OCP Homework assessment - Bastion tasks
   hosts: localhost

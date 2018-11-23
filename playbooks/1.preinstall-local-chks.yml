@@ -1,3 +1,6 @@
+#Preinstall checks:
+#Changes and GUID in hosts file to the correct hoist name variable
+#Checks that the bastion host has the latest "atomic-openshift-clients" & "openshift-ansible" packages install
 ---
 - name: OCP Homework assessment - Bastion tasks
   hosts: localhost
@@ -11,5 +14,3 @@
         state: latest
     - name: Generate Inventory Hosts File
       script: /root/RedHat-OCP-Homework/scripts/generate-guid-hosts.sh
-
-

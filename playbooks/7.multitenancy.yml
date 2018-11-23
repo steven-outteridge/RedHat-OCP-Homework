@@ -1,0 +1,64 @@
+#Create a default project tmeplate with limits - /root/RedHat-OCP-Homework/files/basic-template.yaml
+#Load template (create)
+#Change Template config in master-config.yml to point at new template,
+#Restart master-api
+
+---
+- name: OCP Homework assessment - create new project template with limits
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  tasks:
+    - name: Update project template so new projects have limit range
+      command: >
+         oc create -f /root/RedHat-OCP-Homework/files/basic-template.yaml
+      ignore_errors: yes
+
+- name: change projectRequestTemplate in master-config to point to new template and restart
+  hosts: masters
+  become: yes
+  become_user: root
+  tasks:
+    - lineinfile:
+        path: /etc/origin/master/master-config.yaml
+        regexp: "  projectRequestTemplate: ''"
+        line: '  projectRequestTemplate: "default/project-request"'    
+    - name: Restart systemd
+      systemd:
+        state: restarted
+        daemon_reload: yes
+        name: atomic-openshift-master-api
+
+- name: Label worker nodes alpha and beta
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  tasks:
+    - shell: |
+        GUID=`hostname|awk -F. '{print $2}'`
+        oc label node node1.$GUID.internal client=alpha
+        oc label node node2.$GUID.internal client=beta 
+      ignore_errors: yes
+    - name: Create user entries and passwds
+      shell: |
+        ansible masters -m shell -a"htpasswd -b /etc/origin/master/htpasswd amy amy"
+        ansible masters -m shell -a"htpasswd -b /etc/origin/master/htpasswd andrew andrew"
+        ansible masters -m shell -a"htpasswd -b /etc/origin/master/htpasswd brian brian"
+        ansible masters -m shell -a"htpasswd -b /etc/origin/master/htpasswd betty betty"
+        ansible masters -m shell -a "systemctl restart atomic-openshift-master-api atomic-openshift-master-controllers"
+    - name: Create projects with node selectors and add users to admin role
+      shell: |
+        oc adm new-project alpha --node-selector=client=alpha
+        oc adm new-project beta --node-selector=client=beta
+        oc adm policy add-role-to-user admin amy -n alpha
+        oc adm policy add-role-to-user admin andrew -n alpha
+        oc adm policy add-role-to-user admin brian -n beta
+        oc adm policy add-role-to-user admin betty -n beta
+    - name: Create projects with node selectors and add users to admin role
+      shell: |
+        oc create sa common
+        oc policy add-role-to-group edit system:serviceaccounts:edit -n alpha
+        oc policy add-role-to-group edit system:serviceaccounts:edit -n beta
+

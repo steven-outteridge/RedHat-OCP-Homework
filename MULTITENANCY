@@ -1,7 +1,3 @@
-remove defualtnodeselctor
-/etc/origin/master/master-config.yaml
-
-
 GUID=`hostname|awk -F. '{print $2}'`
 oc label node node1.$GUID.internal client=alpha
 oc label node node2.$GUID.internal client=beta
@@ -24,8 +20,5 @@ oc adm policy add-role-to-user admin brian -n beta
 oc adm policy add-role-to-user admin betty -n beta
 
 oc create sa common
-
-
-
-#oc adm new-project myproject --node-selector='type=user-node,client=alpha-corp'
-
+oc policy add-role-to-group edit system:serviceaccounts:edit -n alpha
+oc policy add-role-to-group edit system:serviceaccounts:edit -n beta
