@@ -1,10 +1,4 @@
 ---
-- name: Generate Inventory Hosts File
-  hosts: localhost
-  tasks:
-    - name: Generate Inventory script
-      script: /root/RedHat-OCP-Homework/scripts/generate-guid-hosts.sh
-
 - name: OCP Homework assessment - pre install checks
   hosts: all
 
@@ -17,7 +11,6 @@
 
     - name: All GUID env variable
       shell: export GUID=`hostname | cut -d"." -f2`; echo "export GUID=$GUID" >> $HOME/.bashrc
-
 
     - name: Create NFS dirs
       when: inventory_hostname in groups['nfs']

@@ -1,3 +1,5 @@
+#One playbook to rule them all
+#Bring all the playbooks together and run in sequence
 ---
 - import_playbook: /root/RedHat-OCP-Homework/playbooks/1.preinstall-local-chks.yml
 - import_playbook: /root/RedHat-OCP-Homework/playbooks/2.preinstall-chks.yml

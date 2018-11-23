@@ -13,6 +13,10 @@ Assuming clone from /root as root the cluster can then be installed using the co
 
 /root/RedHat-OCP-Homework/installcluster.sh
 
+Logs
+----
+As all deployments are managed by Ansible, so logging is enabled in ansible.cfg to point to /var/log/ansible.log\
+
 
 Pre Configured host file:
 -------------------------

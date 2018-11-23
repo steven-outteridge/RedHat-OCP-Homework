@@ -4,7 +4,7 @@
 #Restart master-api
 
 ---
-- name: OCP Homework assessment - create new project template with limits
+- name: OCP Homework assessment - Create 2 Cient envionments and manage templates
   hosts: localhost
   connection: local
   become: yes
@@ -56,7 +56,7 @@
         oc adm policy add-role-to-user admin andrew -n alpha
         oc adm policy add-role-to-user admin brian -n beta
         oc adm policy add-role-to-user admin betty -n beta
-    - name: Create projects with node selectors and add users to admin role
+    - name: Create commoncService Account and add to client project 
       shell: |
         oc create sa common
         oc policy add-role-to-group edit system:serviceaccounts:edit -n alpha

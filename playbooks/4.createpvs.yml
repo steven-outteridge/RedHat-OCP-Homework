@@ -1,7 +1,7 @@
 #Create persistent volume files from template for 2 types of storage,
 #"5G Recycle ReadWriteOnce" & "10G retain ReadWriteMany" then create the persistent volumes on the cluster
 ---
-- name: OCP Homework assessment - Bastion tasks
+- name: OCP Homework assessment - Create PV's
   hosts: localhost
   connection: local
   become: yes
@@ -9,7 +9,7 @@
   vars:
     nfsserver: "{{ groups['nfs'][0] }}"
   tasks:
-    - name:  BASTION Create PV config file 10G retain ReadWriteMany
+    - name:  Create PV config file 10G retain ReadWriteMany
       vars:
         volsize: '10Gi'
         reclaimmode: 'Retain'
@@ -21,7 +21,7 @@
       tags:
         - pvconfile1
 
-    - name:  BASTION Create PV config file 5G Recycle ReadWriteOnce
+    - name:  Create PV config file 5G Recycle ReadWriteOnce
       vars:
         volsize: '5Gi'
         reclaimmode: 'Recycle'
@@ -33,7 +33,7 @@
       tags:
         - pvconfile2
 
-    - name:  BASTION Create PVs
+    - name:   Create PVs
       command: >
           oc create -f /root/RedHat-OCP-Homework/pv/pv{{ item }}
       with_sequence: start=1 end=50

@@ -1,11 +1,11 @@
 ---
-- name: OCP Homework assessment - Bastion create test app
+- name: OCP Homework assessment - create test app
   hosts: localhost
   connection: local
   become: yes
   become_user: root
   tasks:
-    - name: Create project
+    - name: Create smoke test project
       command: >
           oc new-project smoke-test
       tags:

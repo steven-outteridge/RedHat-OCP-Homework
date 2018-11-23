@@ -2,13 +2,13 @@
 #Changes and GUID in hosts file to the correct hoist name variable
 #Checks that the bastion host has the latest "atomic-openshift-clients" & "openshift-ansible" packages install
 ---
-- name: OCP Homework assessment - Bastion tasks
+- name: OCP Homework assessment - Pre-checks local
   hosts: localhost
   connection: local
   become: yes
   become_user: root
   tasks:
-    - name: LOCALHOST BASTION ONLY Check atomic-openshift-clients openshift-ansible are installed to latest version
+    - name: Check atomic-openshift-clients openshift-ansible are installed to latest version
       yum:
         name: atomic-openshift-clients, openshift-ansible
         state: latest
