@@ -6,19 +6,30 @@ Lecturer - jindrich.kana@elostech.cz
 Overview and quick install
 --------------------------
 This install is designed to be applied to the Red Hat Opentlc homework enviroment.
-The cluster install can be cloned from https://github.com/steven-outteridge/RedHat-OCP-Homework.git
-It will create an ansible structure under RedHat-OCP-Homework with config files, templates and scripts.
+The cluster install can be cloned from https://github.com/steven-outteridge/RedHat-OCP-Homework.git.
+It will create an ansible structure under RedHat-OCP-Homework with hosts group_vars config files, templates and scripts.
 The cluster can then be installed using the command:
 
 /root/RedHat-OCP-Homework/installcluster.sh
 
-The script calls a numbe of playbooks that peform the following:
+The script calls a number of playbooks that peform the following tasks:
 
 Preinstall checks:
 Changes and GUID in hosts file to the correct hoist name variable
 Checks that the bastion host has the latest "atomic-openshift-clients" & "openshift-ansible" packages install
 All nodes have latest docker installed and running
-The NFS server defined in hosts is exporting /srv/nfs
+The NFS node defined in hosts is exporting /srv/nfs with correct permissions and restarts the service
+
+Installs the cluster:
+/usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+/usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+
+Post Install:
+Import /root/.kube/config to bastion to allow ansibler to manage OCP objects locally
+Create persistent volume files from template for 2 types of storage,  "5G Recycle ReadWriteOnce" & "10G retain ReadWriteMany" then create the persistent volumes on the cluster
+
+Cluster Test:
+Run up a test project "Smoke Test" and install a DB with persistent storage.
 
 
 Basic Requirements
