@@ -21,8 +21,9 @@ Host file and host_group-OSEv3 have pre-configured cluster variables:
    Three Masters - (HA requirement)
    Three etcd nodes - (HA requirment)
    Cluster Variables:
-   master console to port 443 - (Basic Requirement)
+   master console definition - (Basic Requirement)
    enabling registry with 20G of persistent NFS storage (Basic Requirement)
+   Web proxy that maps URLs and paths into OpenShift services allowing external traffic into cluster.
    configure 2 replicated router pods on infra nodes - label 'env':'infra' (Basic Env and HA Requirement)
    High availabe access to master through loadbalancer (HA requirement)
       openshift_master_cluster_public_hostname
@@ -81,6 +82,12 @@ e.g.
    
 
 Multitenancy:
+Create a default project tmeplate with limits - /root/RedHat-OCP-Homework/files/basic-template.yaml
+Load template (create)
+Change Template config in master-config.yml to point at new template,
+Restart master-api
+
+
 Two clients are sharing a cluster so need isolated projects, alpha and beta with 2 users in each and a common system account for all other workloads.
 1. Dedicate a node for each Client by labeling 2 compute nodes "client=alpha" & "client=beta"
 2. Create 2 isolated projects "alpha" & "beta" with node selector "client=alpha" & "client=beta"
@@ -88,19 +95,3 @@ Create 2 users for each project using htpasswd (needs to be done on all masters 
 Give each pait of users admin access to their respective projects
 
 
-
-
-
-
-
-
-
-
-
-
-HA Requirements
----------------
-
-
-Router
-Web proxy that maps URLs and paths into OpenShift services allowing external traffic into cluster.
