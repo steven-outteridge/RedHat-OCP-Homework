@@ -14,10 +14,22 @@ The cluster can then be installed using the command:
 
 Tasks
 -----
-The script calls a number of playbooks that peform the following tasks:
+Basic Requirements:
+Configure host file:
+Host file and host_grouip OSEv3 have been pre-configured cluster variables:
+   master console to port 443
+   enabling registry with 20G of NFS storage
+   configure 2 replicated router pods on infra nodes
+
+
+The ansible script calls a number of playbooks that peform the following tasks:
 
 Preinstall checks:
-Changes and GUID in hosts file to the correct hoist name variable
+Ansible manages the deployment using hosts and OSEv3 vars files to describes the configuration of the OCP cluster. The hosts needs to contain the phyhsical hostnames under the following groups:
+lb masters
+etcd
+nodes and nfs also the infra nodes need the label 'env':'infra'
+Changes and GUID in configured hosts file to the correct hoist name variable
 Checks that the bastion host has the latest "atomic-openshift-clients" & "openshift-ansible" packages install
 All nodes have latest docker installed and running
 The NFS node defined in hosts is exporting /srv/nfs with correct permissions and restarts the service
@@ -58,26 +70,7 @@ rollout latest deployment
 
 
 
-Basic Requirements
-------------------
-preinstall ansilble scripts
- Confirm atomic-openshift-clients and openshift-ansible are at the acceptble level
- Check docker is installed on master infra and compute nodes
- Create NFS exports 
-Configure host file
-   Ansible manages the deployment using hosts and OSEv3 vars files to describes the configuration of the OCP cluster. The hosts needs to contain the phyhsical hostnames under the following groups: lb masters etcd nodes and nfs also the infra nodes need the label 'env':'infra'
-   OSEv3 variable.  The deployed services are configure using cluster variables that can live in the host inventory file or be moved out to a yaml group_var file for convenince. Basic requiremnt configurations include,
-   master console to port 443
-   enabling registry with 20G of NFS storage
-   configure 2 replicated router pods on infra nodes
-   
-Once the pre install checks are complete the install initiates using the host configurations. 
 
-Post Install 50 PV's of different sizes and types a automatically created:
-25 x 10G retain ReadWriteMany
-25 x 5G Recycle ReadWriteOnce
-
-Install test app nodejs-mongo-persistent to test deployment is OK
 
 HA Requirements
 ---------------
