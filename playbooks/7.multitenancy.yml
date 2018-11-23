@@ -12,7 +12,7 @@
   tasks:
     - name: Update project template so new projects have limit range
       command: >
-         oc create -f /root/RedHat-OCP-Homework/files/basic-template.yaml
+         oc create -f /root/RedHat-OCP-Homework/files/basic-template.yaml -n default
       ignore_errors: yes
 
 - name: change projectRequestTemplate in master-config to point to new template and restart
