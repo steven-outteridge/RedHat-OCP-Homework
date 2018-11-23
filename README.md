@@ -1,6 +1,7 @@
 RedHat-OCP-HomeWork Assignment
 Course - 12th - 16th November 2018
 Lecturer - jindrich.kana@elostech.cz
+Deploying Enginer - soutteridge@crossvale.com
 
 
 Overview and quick install
@@ -8,7 +9,7 @@ Overview and quick install
 This install is designed to be applied to the Red Hat Opentlc homework enviroment.
 The cluster install can be cloned from https://github.com/steven-outteridge/RedHat-OCP-Homework.git.
 It will create an ansible structure under RedHat-OCP-Homework with hosts group_vars config files, templates and scripts.
-Assuming clopne from /root the cluster can then be installed using the command:
+Assuming clone from /root as root the cluster can then be installed using the command:
 
 /root/RedHat-OCP-Homework/installcluster.sh
 
@@ -19,7 +20,7 @@ Host file and host_group-OSEv3 have pre-configured cluster variables:
    Host File:
    Three Masters - (HA requirement)
    Three etcd nodes - (HA requirment)
-   Cluster Variables
+   Cluster Variables:
    master console to port 443 - (Basic Requirement)
    enabling registry with 20G of persistent NFS storage (Basic Requirement)
    configure 2 replicated router pods on infra nodes - label 'env':'infra' (Basic Env and HA Requirement)
@@ -37,7 +38,7 @@ Host file and host_group-OSEv3 have pre-configured cluster variables:
    
 Deploymnent Tasks
 -----------------
-The ansible script calls a number of playbooks that peform the following tasks:
+The ansible master.yml script calls a number of playbooks that peform the following tasks:
 
 Preinstall checks:
 
@@ -74,6 +75,19 @@ On the Production project created in the CI/CD deployment
 create a limit range
 auto scale to 80% CPU threshold and maximum of 10 pods
 rollout latest deployment
+e.g.
+   NAME                  REFERENCE                          TARGETS    MINPODS   MAXPODS   REPLICAS   AGE
+   hpa/openshift-tasks   DeploymentConfig/openshift-tasks   0% / 80%   1         10        2          2d
+   
+
+Multitenancy:
+Two clients are sharing a cluster so need isolated projects, alpha and beta with 2 users in each and a common system account for all other workloads.
+1. Dedicate a node for each Client by labeling 2 compute nodes "client=alpha" & "client=beta"
+2. Create 2 isolated projects "alpha" & "beta" with node selector "client=alpha" & "client=beta"
+Create 2 users for each project using htpasswd (needs to be done on all masters and atomic-openshift-api)
+Give each pait of users admin access to their respective projects
+
+
 
 
 
