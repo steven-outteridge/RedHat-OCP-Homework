@@ -1,25 +1,31 @@
-iRedHat-OCP-HomeWork Assignment
+RedHat-OCP-HomeWork Assignment
 Course - 12th - 16th November 2018
 Lecturer - jindrich.kana@elostech.cz
 Deploying Enginer - soutteridge@crossvale.com
+GitRepo -  "git clone https://github.com/steven-outteridge/RedHat-OCP-Homework"
 
+
+Pre-requisits
+------------
+This install is designed to be deployed in the Red Hat Opentlc homework enviroment.
+The install will run from a Bastion host with the OCP ID of system:admin
+After cloning the repo the working directory is /root/RedHat-OCP-Homework
 
 Overview and quick install
 --------------------------
-This install is designed to be applied to the Red Hat Opentlc homework enviroment.
-The cluster install can be cloned from https://github.com/steven-outteridge/RedHat-OCP-Homework.git.
+The cluster install is to be cloned from https://github.com/steven-outteridge/RedHat-OCP-Homework.git.
 It will create an ansible structure under RedHat-OCP-Homework with hosts group_vars config files, templates and scripts.
-Assuming clone from /root as root the cluster can then be installed using the command:
+Assuming clone from /root as root, the cluster can then be installed using the command:
 
 /root/RedHat-OCP-Homework/installcluster.sh
 
 Logs
 ----
-As all deployments are managed by Ansible, so logging is enabled in ansible.cfg to point to /var/log/ansible.log\
+As all deployments are managed by Ansible, so logging is enabled in ansible.cfg to point to /var/log/ansible.log.
 
 
-Pre Configured host file:
--------------------------
+Pre Configured host file and group_vars:
+----------------------------------------
 Host file and host_group-OSEv3 have pre-configured cluster variables:
    Host File:
    Three Masters - (HA requirement)
@@ -47,7 +53,7 @@ The ansible master.yml script calls a number of playbooks that peform the follow
 
 Preinstall checks:
 
-Changes and GUID in configured hosts file to the correct hoist name variable
+Changes and GUID in configured hosts file to the correct host name variable
 Checks that the bastion host has the latest "atomic-openshift-clients" & "openshift-ansible" packages install
 All nodes have latest docker installed and running
 The NFS node defined in hosts is exporting /srv/nfs with correct permissions and restarts the service
@@ -95,6 +101,24 @@ Two clients are sharing a cluster so need isolated projects, alpha and beta with
 2. Create 2 isolated projects "alpha" & "beta" with node selector "client=alpha" & "client=beta"
 Create 2 users for each project using htpasswd (needs to be done on all masters and atomic-openshift-api)
 Give each pait of users admin access to their respective projects
+The users can be created using templates called from a script, example below:
 
+$/root/RedHat-OCP-Homework/scripts/add-user.sh -u Fred -c alpha
 
+user "Fred" created
 
+$oc get user/Fred -o yaml
+
+apiVersion: user.openshift.io/v1
+groups: null
+identities:
+- htpasswd_auth:Fred
+kind: User
+metadata:
+  creationTimestamp: 2018-11-24T12:03:49Z
+  labels:
+    client: alpha
+  name: Fred
+  resourceVersion: "24895"
+  selfLink: /apis/user.openshift.io/v1/users/Fred
+  uid: 008d3f3c-efe1-11e8-b4d4-12c2561ad8aa

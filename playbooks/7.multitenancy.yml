@@ -59,6 +59,7 @@
     - name: Create commoncService Account and add to client project 
       shell: |
         oc create sa common
-        oc policy add-role-to-group edit system:serviceaccounts:edit -n alpha
-        oc policy add-role-to-group edit system:serviceaccounts:edit -n beta
+        oc create sa common
+        oc policy add-role-to-group edit system:serviceaccounts:common edit -n alpha
+        oc policy add-role-to-group edit system:serviceaccounts:common edit -n beta
 

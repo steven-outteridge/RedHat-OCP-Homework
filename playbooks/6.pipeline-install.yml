@@ -5,5 +5,70 @@
   become: yes
   become_user: root
   tasks:
-    - name: run the script to deploy the apps and pipeline
-      script: /root/RedHat-OCP-Homework/Jenkins/cicd-create.sh
+    - name: Create Projects for Jenkins, build,dev,test & prod
+      shell: |
+        oc new-project cicd-dev
+        oc new-project tasks-build
+        oc new-project tasks-dev
+        oc new-project tasks-test
+        oc new-project tasks-prod
+
+    - name: install persistant Jenkins and pause for a min before continuing
+      shell: |
+        oc new-app jenkins-persistent -p ENABLE_OAUTH=false -e JENKINS_PASSWORD=openshiftpipelines -n cicd-dev
+        sleep 60
+#      pause:
+ #       minutes: 1
+
+    - name: Enable Jenkins serviceAccount to edit all projects, and project service accounts to pull images from the build image stream
+      shell: |
+        oc policy add-role-to-user edit system:serviceaccount:cicd-dev:jenkins -n cicd-dev
+        oc policy add-role-to-user edit system:serviceaccount:cicd-dev:jenkins -n tasks-build
+        oc policy add-role-to-user edit system:serviceaccount:cicd-dev:jenkins -n tasks-dev
+        oc policy add-role-to-user edit system:serviceaccount:cicd-dev:jenkins -n tasks-test
+        oc policy add-role-to-user edit system:serviceaccount:cicd-dev:jenkins -n tasks-prod
+        oc policy add-role-to-group system:image-puller system:serviceaccounts:tasks-prod -n tasks-build
+        oc policy add-role-to-group system:image-puller system:serviceaccounts:tasks-test -n tasks-build
+        oc policy add-role-to-group system:image-puller system:serviceaccounts:tasks-dev -n tasks-build
+
+    - name: Install App in build project
+      shell: |
+        oc new-app jboss-eap70-openshift:1.6~https://github.com/OpenShiftDemos/openshift-tasks -n tasks-build
+        sleep 120
+#      pause:
+ #       minutes: 2
+
+    - name: Tag images for pipeline
+      shell: |
+        oc tag openshift-tasks:latest openshift-tasks:devready -n tasks-build
+        oc tag openshift-tasks:devready openshift-tasks:testready -n tasks-build
+        oc tag openshift-tasks:testready openshift-tasks:prodready -n tasks-build
+
+    - name: Install apps using build image stream tags in the projects and pause to allow to complete
+      shell: |
+        oc new-app tasks-build/openshift-tasks:devready -n tasks-dev
+        oc new-app tasks-build/openshift-tasks:testready -n tasks-test
+        oc new-app tasks-build/openshift-tasks:prodready -n tasks-prod
+        sleep 60
+ #     pause:
+#        minutes: 1
+
+    - name: Expose service on all applications
+      shell: |
+        oc expose svc openshift-tasks -n tasks-build
+        oc expose svc openshift-tasks -n tasks-dev
+        oc expose svc openshift-tasks -n tasks-test
+        oc expose svc openshift-tasks -n tasks-prod
+
+    - name: Create pipeline and start the build
+      shell: |
+        oc create -f /root/RedHat-OCP-Homework/Jenkins/pipeline.yaml -n tasks-build
+        oc start-build tasks-pipeline -n tasks-build
+        sleep 30
+
+    - name: Horizonal Pod AutoScaler, Create Limits and autoscale tasks-prod
+      shell: |
+        oc create -f /root/RedHat-OCP-Homework/Jenkins/limitrange-test.yaml -n tasks-prod
+        oc autoscale dc/openshift-tasks --min 1 --max 10 --cpu-percent=80 -n tasks-prod
+        oc rollout latest deploymentconfigs/openshift-tasks -n tasks-prod
+
