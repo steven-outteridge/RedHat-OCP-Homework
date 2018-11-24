@@ -29,6 +29,7 @@
         state: restarted
         daemon_reload: yes
         name: atomic-openshift-master-api
+    - wait_for: timeout=20
 
 - name: Label worker nodes alpha and beta
   hosts: localhost
