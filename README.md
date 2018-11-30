@@ -110,7 +110,7 @@ Restart master-api
 Two clients are sharing a cluster so need isolated projects, alpha and beta with 2 users in each and a common system account for all other workloads.  
 Dedicate a node for each Client by labeling 2 compute nodes "client=alpha" & "client=beta"  
 Create 2 isolated projects "alpha" & "beta" with node selector "client=alpha" & "client=beta"  
-Create 2 users for each project using htpasswd (needs to be done on all masters and atomic-openshift-api)  
+Create 2 users for each project using user tempolate and use htpasswd to change their passwords 
 Give each pair of users admin access to their respective projects  
 Note1! The users can be created using templates called from a script, example below:  
 

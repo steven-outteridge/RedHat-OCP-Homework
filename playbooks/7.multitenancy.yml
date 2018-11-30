@@ -44,6 +44,10 @@
       ignore_errors: yes
     - name: Create user entries and passwds
       shell: |
+        oc process -f /root/RedHat-OCP-Homework/files/user-template.yaml -p USERNAME=amy -p CLIENT=alpha | oc create -f -
+        oc process -f /root/RedHat-OCP-Homework/files/user-template.yaml -p USERNAME=andrew -p CLIENT=alpha | oc create -f -
+        oc process -f /root/RedHat-OCP-Homework/files/user-template.yaml -p USERNAME=brian -p CLIENT=beta | oc create -f -
+        oc process -f /root/RedHat-OCP-Homework/files/user-template.yaml -p USERNAME=betty -p CLIENT=beta | oc create -f -
         ansible masters -m shell -a"htpasswd -b /etc/origin/master/htpasswd amy amy"
         ansible masters -m shell -a"htpasswd -b /etc/origin/master/htpasswd andrew andrew"
         ansible masters -m shell -a"htpasswd -b /etc/origin/master/htpasswd brian brian"
@@ -64,3 +68,10 @@
         oc policy add-role-to-group edit system:serviceaccounts:common edit -n alpha
         oc policy add-role-to-group edit system:serviceaccounts:common edit -n beta
 
+    - name: Add limits to new poject using previous template as oc adm new-porject by-passes it
+      shell: |
+        oc project alpha
+        oc process -f /root/RedHat-OCP-Homework/files/basic-template.yaml -p PROJECT_NAME=alpha -p PROJECT_ADMIN_USER=amy -p PROJECT_REQUESTING_USER=amy -n alpha| oc create -f -
+        oc project beta
+        oc process -f /root/RedHat-OCP-Homework/files/basic-template.yaml -p PROJECT_NAME=beta -p PROJECT_ADMIN_USER=brian -p PROJECT_REQUESTING_USER=brian -n beta| oc create -f -
+      ignore_errors: yes 

@@ -1,20 +1,20 @@
-apiVersion: v1
-kind: BuildConfig
+kind: "BuildConfig"
+apiVersion: "v1"
 metadata:
   annotations:
-    pipeline.alpha.openshift.io/uses: '[{"name": "tasks", "namespace": "", "kind": "DeploymentConfig"}]'
+    pipeline.alpha.openshift.io/uses: '[{"name": "openshift-tasks", "namespace": "", "kind": "DeploymentConfig"}]'
   labels:
-    name: tasks-pipeline
-  name: tasks-pipeline
+    name: "tasks-pipeline"
+  name: "tasks-pipeline"
 spec:
   strategy:
     jenkinsPipelineStrategy:
       jenkinsfile: |-
         node('maven') {
             stage 'build'
-            openshiftBuild(buildConfig: 'tasks', showBuildLogs: 'true')
+            openshiftBuild(buildConfig: 'openshift-tasks', showBuildLogs: 'true')
             stage 'deploy'
-            openshiftDeploy(deploymentConfig: 'tasks')
+            openshiftDeploy(deploymentConfig: 'openshift-tasks')
         }
     type: JenkinsPipeline
   triggers:

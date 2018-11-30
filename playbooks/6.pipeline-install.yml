@@ -17,8 +17,6 @@
       shell: |
         oc new-app jenkins-persistent -p ENABLE_OAUTH=false -e JENKINS_PASSWORD=openshiftpipelines -n cicd-dev
         sleep 60
-#      pause:
- #       minutes: 1
 
     - name: Enable Jenkins serviceAccount to edit all projects, and project service accounts to pull images from the build image stream
       shell: |
@@ -34,9 +32,7 @@
     - name: Install App in build project
       shell: |
         oc new-app jboss-eap70-openshift:1.6~https://github.com/OpenShiftDemos/openshift-tasks -n tasks-build
-        sleep 120
-#      pause:
- #       minutes: 2
+        sleep 360
 
     - name: Tag images for pipeline
       shell: |
@@ -50,8 +46,6 @@
         oc new-app tasks-build/openshift-tasks:testready -n tasks-test
         oc new-app tasks-build/openshift-tasks:prodready -n tasks-prod
         sleep 60
- #     pause:
-#        minutes: 1
 
     - name: Expose service on all applications
       shell: |
@@ -62,8 +56,8 @@
 
     - name: Create pipeline and start the build
       shell: |
-        oc create -f /root/RedHat-OCP-Homework/Jenkins/pipeline.yaml -n tasks-build
-        oc start-build tasks-pipeline -n tasks-build
+        oc create -f /root/RedHat-OCP-Homework/Jenkins/pipeline.yaml -n cicd-dev
+        oc start-build tasks-pipeline -n cicd-dev
         sleep 30
 
     - name: Horizonal Pod AutoScaler, Create Limits and autoscale tasks-prod
@@ -71,4 +65,3 @@
         oc create -f /root/RedHat-OCP-Homework/Jenkins/limitrange-test.yaml -n tasks-prod
         oc autoscale dc/openshift-tasks --min 1 --max 10 --cpu-percent=80 -n tasks-prod
         oc rollout latest deploymentconfigs/openshift-tasks -n tasks-prod
-
